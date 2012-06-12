@@ -1,0 +1,28 @@
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+.memory-ui ul {
+	list-style-type: none;
+	width: 186px;
+}
+
+.memory-ui li {
+	float: left;
+	display: block;
+	width: 60px;
+	height: 80px;
+	border: solid 1px #e6e6e6;
+	text-align: center;
+	font-size: 18px;
+}
+
+.memory-ui li.done {
+	background-color: #e6e6e6;
+}
+
+.memory-ui li.selected {
+	background-color: #369;
+}

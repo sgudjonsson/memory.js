@@ -74,7 +74,7 @@ sgudjonsson.memory = (function() {
 
 	var _private = {
 		cards: [],
-		maximumNumberOfSets: 3,
+		maximumNumberOfSets: 10,
 		events: new EventTarget()
 	};
 
@@ -143,6 +143,7 @@ sgudjonsson.memory = (function() {
 
 			if(!_private.cards[index].isSelected && !_private.cards[index].isDone) {
 				_private.cards[index].isSelected = true;
+				_private.events.fire({ type: "card-selected", target: { card: _private.cards[index] }});
 				_methods.checkMemory();
 			}
 		}

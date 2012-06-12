@@ -14,60 +14,6 @@ Array.prototype.shuffle = function() {
     return this;
 };
 
-// Copyright (c) 2010 Nicholas C. Zakas. All rights reserved.
-// MIT License
-
-// http://www.nczonline.net/blog/2010/03/09/custom-events-in-javascript/
-
-function EventTarget(){
-    this._listeners = {};
-}
-
-EventTarget.prototype = {
-
-    constructor: EventTarget,
-
-    addListener: function(type, listener){
-        if (typeof this._listeners[type] == "undefined"){
-            this._listeners[type] = [];
-        }
-
-        this._listeners[type].push(listener);
-    },
-
-    fire: function(event){
-        if (typeof event == "string"){
-            event = { type: event };
-        }
-        if (!event.target){
-            event.target = this;
-        }
-
-        if (!event.type){  //falsy
-            throw new Error("Event object missing 'type' property.");
-        }
-
-        if (this._listeners[event.type] instanceof Array){
-            var listeners = this._listeners[event.type];
-            for (var i=0, len=listeners.length; i < len; i++){
-                listeners[i].call(this, event);
-            }
-        }
-    },
-
-    removeListener: function(type, listener){
-        if (this._listeners[type] instanceof Array){
-            var listeners = this._listeners[type];
-            for (var i=0, len=listeners.length; i < len; i++){
-                if (listeners[i] === listener){
-                    listeners.splice(i, 1);
-                    break;
-                }
-            }
-        }
-    }
-};
-
 var sgudjonsson = sgudjonsson || {};
 
 sgudjonsson.memory = (function() {
@@ -75,10 +21,12 @@ sgudjonsson.memory = (function() {
 	var _private = {
 		cards: [],
 		maximumNumberOfSets: 10,
-		events: new EventTarget()
+		eventListeners: {}
 	};
 
 	var _methods = {
+
+		// Basic game logic
 
 		checkMemory: function() {
 
@@ -95,10 +43,10 @@ sgudjonsson.memory = (function() {
 					_private.cards[selected[0]].isDone = true;
 					_private.cards[selected[1]].isDone = true;
 
-					_private.events.fire({ type: "match-found", target: { indexes: selected } });
+					_methods.fire({ type: "match-found", target: { indexes: selected } });
 				}
 				else
-					_private.events.fire({ type: "no-match-found", target: { indexes: selected } });
+					_methods.fire({ type: "no-match-found", target: { indexes: selected } });
 
 				_private.cards[selected[0]].isSelected = false;
 				_private.cards[selected[1]].isSelected = false;
@@ -111,7 +59,7 @@ sgudjonsson.memory = (function() {
 			}
 
 			if(dones == _private.cards.length)
-				_private.events.fire({ type: "game-won" });
+				_methods.fire({ type: "game-won" });
 		},
 
 		shuffleCards: function() {
@@ -143,11 +91,50 @@ sgudjonsson.memory = (function() {
 
 			if(!_private.cards[index].isSelected && !_private.cards[index].isDone) {
 				_private.cards[index].isSelected = true;
-				_private.events.fire({ type: "card-selected", target: { card: _private.cards[index] }});
+				_methods.fire({ type: "card-selected", target: { card: _private.cards[index] }});
 				_methods.checkMemory();
 			}
-		}
+		},
 
+
+		// Event listeners
+
+		addListener: function(type, listener) {
+			if (typeof _private.eventListeners[type] == "undefined"){
+	            _private.eventListeners[type] = [];
+	        }
+
+	        _private.eventListeners[type].push(listener);
+		},
+
+		removeListener: function(type, listener){
+	        if (_private.eventListeners[type] instanceof Array){
+	            var listeners = _private.eventListeners[type];
+	            for (var i=0, len=listeners.length; i < len; i++){
+	                if (listeners[i] === listener){
+	                    listeners.splice(i, 1);
+	                    break;
+	                }
+	            }
+	        }
+	    },
+
+	    fire: function(event){
+	        if (typeof event == "string")
+	            event = { type: event };
+	        if (!event.target)
+	            event.target = {};
+
+	        if (!event.type)
+	            throw "Event object missing 'type' property.";
+
+	        if (_private.eventListeners[event.type] instanceof Array){
+	            var listeners = _private.eventListeners[event.type];
+	            for (var i=0, len=listeners.length; i < len; i++){
+	                listeners[i].call(this, event);
+	            }
+	        }
+	    }
 	};
 
 	return {
@@ -155,12 +142,14 @@ sgudjonsson.memory = (function() {
 			_methods.loadCards(numberOfSets || _private.maximumNumberOfSets);
 			_methods.shuffleCards();
 
-			_private.events.fire({ type: "game-created", target: { cards: _private.cards }});
+			_methods.fire({ type: "game-created", target: { cards: _private.cards }});
 		},
 		selectCard: function(index) {
 			_methods.selectCardAtIndex(index);
 		},
-		events: _private.events
+		addListener: function(type, listener) {
+			_methods.addListener(type, listener);
+		}
 	}
 
 })();

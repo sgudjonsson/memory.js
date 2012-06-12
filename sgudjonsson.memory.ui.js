@@ -18,7 +18,7 @@ sgudjonsson.memory.ui = (function($) {
 		load: function(elm) {
 			_private.base = elm;
 
-			sgudjonsson.memory.events.addListener("game-created", function(e) {
+			sgudjonsson.memory.addListener("game-created", function(e) {
 				$(_private.base)
 					.empty()
 					.addClass("memory-ui")
@@ -31,18 +31,18 @@ sgudjonsson.memory.ui = (function($) {
 				}
 			});
 
-			sgudjonsson.memory.events.addListener("match-found", function(e) {
+			sgudjonsson.memory.addListener("match-found", function(e) {
 				for(var i = 0; i < e.target.indexes.length; i++)
 					$(_private.base).find("li").eq(e.target.indexes[i]).addClass("done");
 
 				$(_private.base).find("li").removeClass("selected");
 			});
 
-			sgudjonsson.memory.events.addListener("no-match-found", function(e) {
+			sgudjonsson.memory.addListener("no-match-found", function(e) {
 				$(_private.base).find("li").removeClass("selected");
 			});
 
-			sgudjonsson.memory.events.addListener("game-won", function(e) {
+			sgudjonsson.memory.addListener("game-won", function(e) {
 				$(_private.base).empty().append("<div class='won'>You won!</div>");
 
 				$(".won").live("click", function() {

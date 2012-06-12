@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="sgudjonsson.memory.js"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var m = sgudjonsson.memory;
+			m.events.addListener("match-found", function(e) {
+				console.log("Found match", e.target.indexes);
+			});
+			m.events.addListener("no-match-found", function(e) {
+				console.log("No match!", e.target.indexes);
+			});
+			m.events.addListener("game-won", function(e) {
+				console.log("Genius! Game won!");
+			});
+			m.events.addListener("game-created", function(e) {
+				for(var i = 0; i < e.target.cards.length; i++) {
+					console.log("card at "+ i + " has key "+ e.target.cards[i].key);
+				}
+			});
+		</script>
+	</body>
+</html>

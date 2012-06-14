@@ -21,7 +21,12 @@ sgudjonsson.memory = (function() {
 	var _private = {
 		cards: [],
 		maximumNumberOfSets: 10,
-		eventListeners: {}
+		eventListeners: {},
+		timer: {
+			start: 0,
+			stop: -1,
+			interval: 0
+		}
 	};
 
 	var _methods = {
@@ -58,8 +63,10 @@ sgudjonsson.memory = (function() {
 					dones++;
 			}
 
-			if(dones == _private.cards.length)
-				_methods.fire({ type: "game-won" });
+			if(dones == _private.cards.length) {
+				var elapsed = _methods.stopTimer();
+				_methods.fire({ type: "game-won", target: { elapsed: elapsed }});
+			}
 		},
 
 		shuffleCards: function() {
@@ -94,6 +101,34 @@ sgudjonsson.memory = (function() {
 				_methods.fire({ type: "card-selected", target: { card: _private.cards[index] }});
 				_methods.checkMemory();
 			}
+		},
+
+		startTimer: function() {
+			_private.timer.start = new Date().getTime();
+			_private.timer.stop = -1;
+
+			var me = this;
+			_private.timer.interval = setInterval(function() { me.fireTimer(); }, 1000);
+		},
+
+		stopTimer: function() {
+			_private.timer.stop = new Date().getTime();
+
+			var elapsed = _private.timer.stop - _private.timer.start;
+
+			_methods.fireTimer();
+			_private.timer.interval = clearInterval(_private.timer.interval);
+
+			_private.timer.start = 0;
+			_private.timer.stop = -1;
+
+			return elapsed;
+		},
+
+		fireTimer: function() {
+			var now = new Date().getTime();
+			var elapsed = now - _private.timer.start;
+			_methods.fire({ type: "timer", target: { elapsed: elapsed }});
 		},
 
 
@@ -141,7 +176,7 @@ sgudjonsson.memory = (function() {
 		create: function(numberOfSets) {
 			_methods.loadCards(numberOfSets || _private.maximumNumberOfSets);
 			_methods.shuffleCards();
-
+			_methods.startTimer();
 			_methods.fire({ type: "game-created", target: { cards: _private.cards }});
 		},
 		selectCard: function(index) {

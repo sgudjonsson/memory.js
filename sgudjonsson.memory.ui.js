@@ -42,8 +42,14 @@ sgudjonsson.memory.ui = (function($) {
 				$(_private.base).find("li").removeClass("selected");
 			});
 
+			sgudjonsson.memory.addListener("timer", function(e) {
+				console.log("timer", Math.floor(e.target.elapsed/1000));
+			})
+
 			sgudjonsson.memory.addListener("game-won", function(e) {
 				$(_private.base).empty().append("<div class='won'>You won!</div>");
+
+				console.log(e.target);
 
 				$(".won").live("click", function() {
 					sgudjonsson.memory.create(Math.floor(Math.random() * 10) + 2);

@@ -35,11 +35,7 @@ sgudjonsson.memory = (function() {
 
 		checkMemory: function() {
 
-			var selected = [];
-			for(var i = 0; i < _private.cards.length; i++) {
-				if(_private.cards[i].isSelected)
-					selected.push(i);
-			}
+			var selected = _methods.getSelectedCards();
 
 			if(selected.length == 2)
 			{
@@ -103,7 +99,19 @@ sgudjonsson.memory = (function() {
 			}
 		},
 
+		getSelectedCards: function() {
+			var selected = [];
+			for(var i = 0; i < _private.cards.length; i++) {
+				if(_private.cards[i].isSelected)
+					selected.push(i);
+			}
+
+			return selected;
+		},
+
 		startTimer: function() {
+
+			clearInterval(_private.timer.interval);
 			_private.timer.start = new Date().getTime();
 			_private.timer.stop = -1;
 
@@ -181,6 +189,7 @@ sgudjonsson.memory = (function() {
 		},
 		selectCard: function(index) {
 			_methods.selectCardAtIndex(index);
+			return _methods.getSelectedCards();
 		},
 		addListener: function(type, listener) {
 			_methods.addListener(type, listener);

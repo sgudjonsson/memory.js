@@ -11,7 +11,8 @@ if(!jQuery)
 sgudjonsson.memory.ui = (function($) {
 
 	var _private = {
-		base: undefined
+		base: undefined,
+		selected: []
 	};
 
 	return {
@@ -22,46 +23,82 @@ sgudjonsson.memory.ui = (function($) {
 				$(_private.base)
 					.empty()
 					.addClass("memory-ui")
-					.append("<ul>");
+					.append("<div class='board'>")
+					.append("<div class='actions'><ul /></div>");
 
-				var $ul = $(_private.base).find("ul");
+				var $board = $(_private.base).find(".board");
 
 				for(var i = 0; i < e.target.cards.length; i++) {
-					$ul.append("<li data-index='"+ i +"'>"+ e.target.cards[i].key +"</li>");
+					$board.append("<div class='card' data-index='"+ i +"'><span>"+ e.target.cards[i].key +"</span></div>");
 				}
+
+				var $actions = $(_private.base).find(".actions ul");
+
+				$actions.append("<li><a id='action-new-game'>New game</a></li>");
+
+				$("#action-new-game").live("click", function() {
+					sgudjonsson.memory.create(8);
+				});
 			});
 
 			sgudjonsson.memory.addListener("match-found", function(e) {
-				for(var i = 0; i < e.target.indexes.length; i++)
-					$(_private.base).find("li").eq(e.target.indexes[i]).addClass("done");
-
-				$(_private.base).find("li").removeClass("selected");
+				for(var i = 0; i < e.target.indexes.length; i++) {
+					$(_private.base).find(".card").eq(e.target.indexes[i]).addClass("done");
+				}
 			});
 
 			sgudjonsson.memory.addListener("no-match-found", function(e) {
-				$(_private.base).find("li").removeClass("selected");
+				for(var i = 0; i < e.target.indexes.length; i++) {
+					$(_private.base).find(".card").eq(e.target.indexes[i])
+						.addClass("no-match");
+				}
 			});
 
 			sgudjonsson.memory.addListener("timer", function(e) {
-				console.log("timer", Math.floor(e.target.elapsed/1000));
 			})
 
 			sgudjonsson.memory.addListener("game-won", function(e) {
-				$(_private.base).empty().append("<div class='won'>You won!</div>");
-
-				console.log(e.target);
-
-				$(".won").live("click", function() {
-					sgudjonsson.memory.create(Math.floor(Math.random() * 10) + 2);
-				});
 			})
 
-			$("li", _private.base).live("click", function(e) {
+			$(".card", _private.base).live("click", function(e) {
+
 				var d = $(this).data();
-				$(this).addClass("selected");
-				sgudjonsson.memory.selectCard(d.index);
+				if(_private.selected.indexOf(d.index) == -1 && !$(this).hasClass("done")) {
+
+					if(_private.selected.length == 2) {
+						$(_private.base).find(".card").removeClass("selected");
+						_private.selected = [];
+					}
+
+					$(_private.base).find(".card").removeClass("no-match");
+					$(this).addClass("selected");
+					var selected = sgudjonsson.memory.selectCard(d.index);
+
+					_private.selected.push(d.index)
+				}
 			});
 		}
 	}
 
 })(jQuery);
+
+
+
+
+
+/*
+
+	Select card
+		remove all "no-match"
+		set as "selected"
+
+	Match found
+		set cards as "done"
+
+	No match found
+		set cards as "no-match"
+
+
+
+
+*/

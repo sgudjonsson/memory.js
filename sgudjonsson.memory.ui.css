@@ -1,28 +1,59 @@
 
-* {
-	padding: 0;
-	margin: 0;
+body {
+	font-family: Arial;
 }
 
-.memory-ui ul {
-	list-style-type: none;
-	width: 186px;
-}
-
-.memory-ui li {
+.board {
 	float: left;
 	display: block;
+	width: 304px;
+	clear: both;
+}
+
+.actions {
+	float: left;
+	display: block;
+	clear: both;
+}
+
+.card {
+	display: block;
+	float: left;
+	margin: 5px;
 	width: 60px;
 	height: 80px;
-	border: solid 1px #e6e6e6;
-	text-align: center;
-	font-size: 18px;
-}
-
-.memory-ui li.done {
-	background-color: #e6e6e6;
-}
-
-.memory-ui li.selected {
+	border: solid 3px #036;
+	border-radius: 9px;
 	background-color: #369;
+
+	font-size: 60px;
+	font-weight: bold;
+	color: #036;
+	text-align: center;
+	line-height: 80px;
+
+	cursor: pointer;
+}
+.card span {
+	display: none;
+}
+
+.card.selected {
+	background-color: #fff;
+	border-color: #0f0;
+}
+.card.selected span {
+	display: block;
+}
+
+.card.done {
+	background-color: #fff;
+	border-color: #036;
+}
+.card.done span {
+	display: block;
+}
+
+.card.no-match {
+	border-color: #f00;
 }

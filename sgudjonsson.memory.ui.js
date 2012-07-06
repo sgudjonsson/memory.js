@@ -15,6 +15,41 @@ sgudjonsson.memory.ui = (function($) {
 		selected: []
 	};
 
+	var _methods = {
+		secondsToTime: function(totalSeconds) {
+
+			var pad = function pad(number, length) {
+			    var str = '' + number;
+			    while (str.length < length) {
+			        str = '0' + str;
+			    }
+			    return str;
+			};
+
+		    var hours = Math.floor(totalSeconds / (60 * 60));
+		   
+		    var divisor_for_minutes = totalSeconds % (60 * 60);
+		    var minutes = Math.floor(divisor_for_minutes / 60);
+		 
+		    var divisor_for_seconds = divisor_for_minutes % 60;
+		    var seconds = Math.ceil(divisor_for_seconds);
+		   
+		   	var text = "";
+		   	if(hours > 0)
+		   		text = pad(hours, 2) + ":";
+
+		   	text += pad(minutes, 2) + ":"+ pad(seconds, 2);
+
+		    var obj = {
+		        hours: hours,
+		        minutes: minutes,
+		        seconds: seconds,
+		        formatted: text
+		    };
+		    return obj;
+		}
+	};
+
 	return {
 		load: function(elm) {
 			_private.base = elm;
@@ -27,6 +62,8 @@ sgudjonsson.memory.ui = (function($) {
 					.append("<div class='actions'><ul /></div>");
 
 				var $board = $(_private.base).find(".board");
+
+				$board.append("<div class='timer'>")
 
 				for(var i = 0; i < e.target.cards.length; i++) {
 					$board.append("<div class='card' data-index='"+ i +"'><span>"+ e.target.cards[i].key +"</span></div>");
@@ -55,6 +92,9 @@ sgudjonsson.memory.ui = (function($) {
 			});
 
 			sgudjonsson.memory.addListener("timer", function(e) {
+				var totalSeconds = Math.floor(e.target.elapsed / 1000);
+				var time = _methods.secondsToTime(totalSeconds);
+				$(_private.base).find(".timer").text(time.formatted);
 			})
 
 			sgudjonsson.memory.addListener("game-won", function(e) {

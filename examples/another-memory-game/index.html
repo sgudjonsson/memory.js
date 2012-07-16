@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Memory Game</title>
+		<link rel="stylesheet" href="memory-game.css" />
+	</head>
+	<body>
+
+		<div class="menu container">
+			<button id="play">Play</button>
+		</div>
+
+		<div class="game container">
+		</div>
+
+		<div id="debugger" style="position: absolute; top: 0px; left: 0px; font-size: 10px; color: #fff; background: rgba(0,0,0,0.5); font-family: Arial; width: 100%; padding: 2px 0px; text-transform: uppercase; text-align: left;">
+			&nbsp;<span class="level"></span> / <span class="timer"></span> / <span class="screen"></span>
+		</div>
+
+
+		<script type="text/javascript" src="../../libs/jquery.min.js"></script>
+		<script type="text/javascript" src="../../sgudjonsson.memory.js"></script>
+		<script type="text/javascript" src="memory-game.js"></script>
+		<script type="text/javascript">
+			$(function() {
+
+				$("#play").click(function() {
+					$(".menu").fadeOut(function() {
+						$(".game").show();
+					});
+				});
+
+				$("#action-game-menu").live("click", function(e) {
+					e.preventDefault();
+					$(".game").fadeOut(function() {
+						$(".menu").show();
+					});
+				})
+
+				$("#action-game-next").live("click", function() {
+					memoryGame.next();
+				});
+
+				$("#action-game-prev").live("click", function() {
+					memoryGame.prev();
+				});
+
+				memoryGame.load($(".game"));
+				memoryGame.next();
+
+
+				$("#debugger").find(".screen").text(screen.width +"x"+ screen.height);
+			});
+		</script>
+	</body>
+</html>

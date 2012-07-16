@@ -1,0 +1,165 @@
+
+/* Eric Meyer's Reset CSS v2.0 - http://cssreset.com */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
+
+/* Clearfix http://stackoverflow.com/a/1633170/90670 */
+.container:before,.container:after {content:"";display:table;}.container:after {clear:both;}.container {zoom:1;}
+
+body {
+	text-align: center;
+}
+
+.container {
+	width: 240px;
+	margin: 0 auto;
+	text-align: left;
+	background-color: lightblue;
+}
+
+.menu {
+	padding: 60px 0px 60px 0px;
+}
+
+.game {
+	display: none;
+}
+
+.game .board {
+	/*background-color: #15DBE6;*/
+	margin: 0 auto;
+}
+
+.actions {
+	float: left;
+}
+
+.card, .blank {
+	float: left;
+	width: 60px;
+	height: 60px;
+	margin: 5px;
+}
+
+.card {
+	background-color: #369;
+	cursor: pointer;
+}
+
+.game .board.cards8,
+.game .board.cards12 {
+	width: 210px;
+}
+.game .board.cards16,
+.game .board.cards20 {
+	width: 280px;
+}
+
+.game .board.cards8 {
+	height: 210px;
+	margin-top: 70px;
+	margin-bottom: 70px;
+}
+.game .board.cards12,
+.game .board.cards16 {
+	height: 280px;
+	margin-top: 35px;
+	margin-bottom: 35px;
+}
+
+.game .board.cards20 {
+	height: 350px;
+}
+
+.card span {
+	display: none;
+	font-size: 50px;
+	line-height: 60px;
+	text-align: center;
+	font-family: Arial;
+	font-weight: bold;
+}
+
+.card.selected {
+	background-color: #fff;
+	border-color: #0f0;
+}
+.card.selected span {
+	display: block;
+}
+
+.card.done {
+	background-color: #fff;
+	border-color: #036;
+}
+.card.done span {
+	display: block;
+}
+
+.card.no-match {
+	border-color: #f00;
+}
+
+
+/* 
+
+Hardboiled CSS3 Media Queries by Andy Clarke:
+http://stuffandnonsense.co.uk/blog/about/hardboiled_css3_media_queries/
+
+Author: Andy Clarke
+Web site: http://stuffandnonsense.co.uk
+Twitter: http://twitter.com/malarkey
+
+Hardboiled Web Design
+Web site: http://hardboiledwebdesign.com
+Twitter: http://twitter.com/itshardboiled
+
+Version date : 30th September 2010
+Version: 0.9
+
+License: Creative Commons CC Zero Declaration. No Rights Reserved.
+
+*/
+
+@media only screen and (max-width: 240px) {
+}
+
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+/* Styles */
+}
+
+/* Smartphones (landscape) ----------- */
+@media only screen and (min-width : 321px) {
+/* Styles */
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-width : 320px) {
+/* Styles */
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+/* Styles */
+}
+
+/* iPads (landscape) ----------- */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
+/* Styles */
+}
+
+/* iPads (portrait) ----------- */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
+/* Styles */
+}
+
+/* Desktops and laptops ----------- */
+@media only screen and (min-width : 1224px) {
+/* Styles */
+}
+
+/* iPhone 4 and high pixel ratio devices ----------- */
+@media only screen and (-webkit-min-device-pixel-ratio : 1.5), only screen and (min-device-pixel-ratio : 1.5) {
+/* Styles */
+}
